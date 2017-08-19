@@ -1,15 +1,19 @@
 
 require 'pry'
+require 'colorize'
 
-@calc = []
+@first_num = ""
 @operator = ""
+@second_num = ""
+@result = ""
 
-puts "Welcome to the ruby calculator!"
+puts " "
+puts "Welcome to the ruby calculator!".colorize(:cyan)
 
 def first_number
-	puts "What is the first number of your equation?"
-	puts "Note: Any letter or symbol entered will become 0."
-	@calc << gets.to_i
+	puts "What is the first number of your equation?".colorize(:cyan)
+	puts "Note: Any letter or symbol entered will become 0.".colorize(:cyan)
+	@first_num = gets.to_i
 	# unless 
 	# else puts "Please enter a valid number."
 	# end	
@@ -17,7 +21,7 @@ def first_number
 end
 
 def operator_input
-	puts "Select an operator: +, -, *, /"
+	puts "Select an operator: +, -, *, /".colorize(:cyan)
 	oper = gets.strip
 	case oper
 		when "+"
@@ -28,49 +32,61 @@ def operator_input
 			@operator = oper
 		when "/"
 			@operator = oper
-		else puts "Please select a valid operator."
+		else puts "Please select a valid operator.".colorize(:red)
 			operator_input
 	end
 	second_number
 end
 
 def second_number
-	puts "What is the second number?"
-	@calc << gets.to_i
+	puts "What is the second number?".colorize(:cyan)
+	@second_num = gets.to_i
 	result
 end
 
 def result
-	puts "Calculating..."
+	puts ""
+	puts "Calculating...".colorize(:cyan)
+	puts ""
 	case @operator
 		when  "+"
-			result = @calc[0] + @calc[1]
+			@result = @first_num + @second_num
 		when "-"
-			result = @calc[0] - @calc[1]
+			@result = @first_num - @second_num
 		when "*"
-			result = @calc[0] * @calc[1]
+			@result = @first_num * @second_num
 		when "/"
-			result = @calc[0] / @calc[1]
+			@result = @first_num / @second_num
 	end
-	puts "The result of #{@calc[0]} #{@operator} #{@calc[1]} is #{result}"
-	@calc = []
+	puts "The result of #{@first_num} #{@operator} #{@second_num} is #{@result}".colorize(:cyan)
+	@first_num = ""
 	@operator = ""
+	@second_num = ""
 	menu
 end
 
 def menu
-	puts "What would you like to do now?"
-	puts "Enter 1 to calculate another equation."
-	puts "Enter 2 to exit."
+	puts "What would you like to do now?".colorize(:cyan)
+	puts "Enter 1 to calculate another equation.".colorize(:cyan)
+	puts "Enter 2 to calculate upon the previous equation.".colorize(:cyan)
+	puts "Enter 3 to exit.".colorize(:cyan)
 	choice = gets.to_i
 
 	case choice
 		when 1
-		first_number
+			first_number
+			@result = ""
 		when 2
-		exit
+			@first_num = @result
+			puts "#{@result} is now the first number in your equation.".colorize(:cyan)
+			operator_input
+		when 3
+			exit
 		else
-		puts "Please enter a valid input."
+			puts " "
+			puts "Please enter a valid input.".colorize(:red)
+			puts " "
+			menu
 	end
 end
 
